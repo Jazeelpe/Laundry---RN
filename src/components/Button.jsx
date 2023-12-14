@@ -13,8 +13,8 @@ export default Button
 
 const styles = StyleSheet.create({
     btn: {
-      height: 50,
-      padding: 10,
+      height: 60,
+      padding: 15,
       backgroundColor:"#F4F4F4"
     },
     text:{
