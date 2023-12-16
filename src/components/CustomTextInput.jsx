@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import React from "react";
 
-const CustomTextInput = ({ type, placeholder, handleFocus }) => {
+const CustomTextInput = ({ type, placeholder, handleFocus,handleText,value }) => {
   return (
     <View>
       <TextInput
@@ -15,13 +15,15 @@ const CustomTextInput = ({ type, placeholder, handleFocus }) => {
         secureTextEntry={type === "password" ? true : false}
         inputMode={
           type === "phone"
-            ? "numeric"
+            ? "tel"
             : type === "bookingqty"
-            ? "numeric"
+            ? "tel"
             : null
         }
         multiline={type === "multiline" ? true : false}
         onFocus={handleFocus}
+        onChangeText={handleText}
+        value={value}
       />
     </View>
   );

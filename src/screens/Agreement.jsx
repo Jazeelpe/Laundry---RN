@@ -1,16 +1,53 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Checkbox from "expo-checkbox";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../components/Button";
 import CustomTextInput from "../components/CustomTextInput";
+import {
+  doc,
+  updateDoc,
+  query,
+  where,
+  collection,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 
-const Agreement = () => {
+const Agreement = ({ route }) => {
+  const { email } = route.params;
+  const [docId, setDocID] = useState("");
+  const [address, setAddress] = useState();
   const [isChecked, setChecked] = useState(false);
+  
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
+
+  const getUserInfoandUpdate = async (callback) => {
+    const q = query(collection(db, "users"), where("email", "==", email));
+    let id = "";
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      id = doc.id;
+      setDocID(doc.id);
+      // console.log(doc.id, " => ", doc.data());
+    });
+
+    callback(id);
+    navigation.navigate("BottomTab");
+  };
+
+  const updateAdress = async (docRef) => {
+    const adressRef = doc(db, "users", docRef);
+
+    // Set the "capital" field of the city 'DC'
+    await updateDoc(adressRef, {
+      address: address,
+    });
+  };
 
   return (
     <View style={safeAreaStyle.maincontainer}>
@@ -34,14 +71,23 @@ const Agreement = () => {
             </Text>
           </View>
           <View style={{ gap: 20 }}>
-            <CustomTextInput placeholder="Address" type="multiline" />
+            <CustomTextInput
+              placeholder="Address"
+              type="multiline"
+              handleText={(text) => setAddress(text)}
+            />
           </View>
           <View style={safeAreaStyle.locationContainer}>
             <Image
               style={{ height: 20, width: 25, resizeMode: "contain" }}
               source={require("../assets/images/Location.png")}
             />
-            <Text style={{ color: "#00C464" }}>Select place by map</Text>
+            <Text
+              style={{ color: "#00C464" }}
+              onPress={() => navigation.navigate("MapScreen")}
+            >
+              Select place by map
+            </Text>
           </View>
           <View style={safeAreaStyle.checkboxContainer}>
             <Checkbox
@@ -55,9 +101,9 @@ const Agreement = () => {
           <View style={{ paddingHorizontal: 70 }}>
             <Button
               btnText="Continue"
-              handleNavigation={() => {
-                navigation.navigate("MapScreen");
-              }}
+              handleNavigation={
+                address !== "" ? () => getUserInfoandUpdate(updateAdress) : null
+              }
             />
           </View>
           <Text

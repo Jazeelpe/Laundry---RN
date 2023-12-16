@@ -17,14 +17,17 @@ const Booking = () => {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [value,setValue] = useState(true)
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
+  console.log(date)
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
+    setValue(!value)
   };
 
   const showMode = (currentMode) => {
@@ -65,6 +68,7 @@ const Booking = () => {
             placeholder={"Today"}
             type="booking"
             handleFocus={showDatepicker}
+            value={value ? "Today" : date.toString()}
           />
           <View style={safeAreaStyle.absoluteContainer}>
             <Text style={safeAreaStyle.text}>When</Text>
@@ -83,7 +87,7 @@ const Booking = () => {
           </View>
         </View>
         <View style={{ alignSelf: "center" }}>
-          <Button btnText={"Confirm Booking"} />
+          <Button btnText={"Confirm Booking"} handleNavigation={()=>navigation.navigate("ConfirmPage")} />
         </View>
         <View>
           <Text

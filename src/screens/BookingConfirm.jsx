@@ -1,10 +1,12 @@
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { View, Text, StyleSheet, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const BookingConfirm = () => {
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
+  const  navigation = useNavigation()
 
   return (
     <View style={safeAreaStyle.mainContainer}>
@@ -23,7 +25,7 @@ const BookingConfirm = () => {
             auctor fringilla.
           </Text>
         </View>
-        <Text style={{ color: "#FF1313", fontSize: 18, alignSelf: "center" }}>
+        <Text style={{ color: "#FF1313", fontSize: 18, alignSelf: "center" }} onPress={()=>navigation.goBack()}>
           Close
         </Text>
       </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,9 +11,21 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
+  const [dontGoBack] = useState(true);
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
+  const handleBackNav = () => {
+    navigation.addListener("beforeRemove", (e) => {
+      if (dontGoBack) {
+        e.preventDefault();
+      }
+    });
+  };
+
+  useEffect(() => {
+    handleBackNav();
+  }, [dontGoBack]);
 
   return (
     <View style={safeAreaStyle.mainContainer}>

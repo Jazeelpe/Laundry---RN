@@ -1,19 +1,56 @@
-import React from "react";
-import { View, Text, StyleSheet, Image,TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 import CustomTextInput from "../components/CustomTextInput";
 import Button from "../components/Button";
-
+import { useDispatch } from "react-redux";
+import { LOGIN } from "../store/userSlice";
 const Login = () => {
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [dontGoBack] = useState(true);
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
+  const dispatch = useDispatch()
+  
+  const handleBackNav = () => {
+    navigation.addListener("beforeRemove", (e) => {
+      if (dontGoBack) {
+        e.preventDefault();
+      }
+    });
+  };
+  const handleNaviagation = () => {
+    navigation.navigate("Signup");
+  };
 
- const handleNaviagation = ()=>{
-    navigation.navigate('Signup')
- }
+  const handleSignin = async () => {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      res = doc.data()
+      if(res.password === password){
+        dispatch(LOGIN({
+          name:res.name,
+          email:res.email,
+          phone:res.phone,
+          address:res.address,
+          washing:res.washing,
+        }))
+        navigation.navigate('BottomTab')
+      }else{
+        console.log('false')
+      }
+      
+    });
+  };
+
+ 
 
   return (
     <View style={safeAreaStyle.maincontainer}>
@@ -45,18 +82,21 @@ const Login = () => {
             </Text>
           </View>
           <View style={{ gap: 20 }}>
-            <CustomTextInput placeholder={"Phone Number / Email"} />
-            <CustomTextInput placeholder={"Password"} type="password" />
+            <CustomTextInput placeholder={"Phone Number / Email"} handleText={(text)=>setEmail(text)} />
+            <CustomTextInput placeholder={"Password"} type="password" handleText={(text)=>setPassword(text)} />
           </View>
           <Text style={{ alignSelf: "flex-end" }}>Forgot Password ?</Text>
           <View style={{ paddingHorizontal: 70 }}>
-            <Button btnText="Login" />
+            <Button btnText="Login" handleNavigation={handleSignin}/>
           </View>
-          <Text style={{ alignSelf: "center", marginVertical: 50 }} >
+          <Text style={{ alignSelf: "center", marginVertical: 50 }}>
             Need an account?
           </Text>
         </View>
-        <TouchableOpacity style={safeAreaStyle.btnContainer} onPress={handleNaviagation}>
+        <TouchableOpacity
+          style={safeAreaStyle.btnContainer}
+          onPress={handleNaviagation}
+        >
           <Text
             style={{
               fontSize: 18,

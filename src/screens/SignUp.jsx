@@ -1,11 +1,15 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useState, useRef } from "react";
 import CustomTextInput from "../components/CustomTextInput";
 import Button from "../components/Button";
 
 const SignUp = () => {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
@@ -13,13 +17,14 @@ const SignUp = () => {
   const handleNavigation = () => {
     navigation.goBack();
   };
-  const handleOtpNav = ()=>{
-    navigation.navigate('Otp')
-  }
+  const handleOtpNav = () => {
+    navigation.navigate("Otp", { name, email, phoneNumber });
+  };
 
   return (
     <View style={safeAreaStyle.maincontainer}>
       <View style={safeAreaStyle.container}>
+       
         <View style={safeAreaStyle.imageContainer}>
           <Image
             style={safeAreaStyle.image}
@@ -47,9 +52,21 @@ const SignUp = () => {
             </Text>
           </View>
           <View style={{ gap: 20 }}>
-            <CustomTextInput placeholder={"Name"} />
-            <CustomTextInput placeholder={"Phone Number"} type="phone" />
-            <CustomTextInput placeholder={"Email"} />
+            <CustomTextInput
+              placeholder={"Name"}
+              handleText={(text) => setName(text)}
+            />
+            <CustomTextInput
+              placeholder={"Phone Number"}
+              type="phone"
+              handleText={(text) => {
+                setPhoneNumber(text);
+              }}
+            />
+            <CustomTextInput
+              placeholder={"Email"}
+              handleText={(text) => setEmail(text)}
+            />
           </View>
           <View style={{ paddingHorizontal: 70 }}>
             <Button btnText="Signup" handleNavigation={handleOtpNav} />
