@@ -2,12 +2,17 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import RadioButtonGroup, { RadioButtonItem } from "expo-radio-button";
+import RadioButton from "../components/RadioButton";
+
 
 const NotificationPage = () => {
+  const [selectedRadio, setSelectedRadio] = React.useState(null);
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
+  const handleRadio = (radioId) => {
+    setSelectedRadio(radioId);
+  };
   return (
     <View style={safeAreaStyle.maincontainer}>
       <View style={safeAreaStyle.container}>
@@ -21,19 +26,36 @@ const NotificationPage = () => {
         <Text>Select your notification preference</Text>
         <View style={{ marginTop: 55 }}>
           <View style={{ marginBottom: 35 }}>
-            <RadioButtonItem
-              radioBackground="green"
-          
-              value="test"
-              label={
-                <TouchableOpacity
-                  style={{ width: "100%", paddingHorizontal: 15 }}
-                  onPress={() => setCurrent("test1")}
-                >
-                  <Text style={{ fontWeight: "700" }}>Notify me on every process</Text>
-                </TouchableOpacity>
-              }
-            />
+          <View style={{ marginBottom: 35 }}>
+              <RadioButton
+                place=""
+                address="Notify me on every process"
+                radioId={1}
+                selectedRadio={selectedRadio}
+                handleRadio={handleRadio}
+                type="notification"
+              />
+            </View>
+            <View style={{ marginBottom: 35 }}>
+              <RadioButton
+                place=""
+                address="All Notification"
+                radioId={2}
+                selectedRadio={selectedRadio}
+                handleRadio={handleRadio}
+                type="notification"
+              />
+            </View>
+            <View style={{ marginBottom: 35 }}>
+              <RadioButton
+                place=""
+                address="Notify me only at the time of delivery"
+                radioId={3}
+                selectedRadio={selectedRadio}
+                handleRadio={handleRadio}
+                type="notification"
+              />
+            </View>
           </View>
         </View>
       </View>

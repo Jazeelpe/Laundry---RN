@@ -32,7 +32,8 @@
     "react-native-webview": "13.2.2",
     "react-redux": "^9.0.4",
     "redux-persist": "^6.0.0",
-    "redux-persist-expo-filesystem": "^2.0.1"
+    "redux-persist-expo-filesystem": "^2.0.1",
+    "expo-location": "~16.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

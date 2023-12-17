@@ -23,6 +23,7 @@ import PaymentPage from "./src/screens/PaymenPage";
 import NotificationPage from "./src/screens/NotificationPage";
 import { store } from "./src/store/store";
 import {  Provider } from "react-redux";
+import SavedAdressPage from "./src/screens/SavedAdressPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -47,7 +48,7 @@ function AppNavigation() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="AddressPage">
+        <Stack.Navigator screenOptions={{ headerShown: false }} >
           <Stack.Screen name="OnboardingScreen" component={OnboardingScreen} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Signup" component={SignUp} />
@@ -61,6 +62,7 @@ function AppNavigation() {
           <Stack.Screen name="PaymentPage" component={PaymentPage} />
           <Stack.Screen name="NotificationPage" component={NotificationPage} />
           <Stack.Screen name="ProfileDetail" component={ProfileDetail} />
+          <Stack.Screen name="SavedAddressPage" component={SavedAdressPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

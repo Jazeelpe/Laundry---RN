@@ -2,12 +2,16 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import RadioButtonGroup, { RadioButtonItem } from "expo-radio-button";
+import RadioButton from "../components/RadioButton";
 
 const PaymentPage = () => {
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
+  const [selectedRadio, setSelectedRadio] = React.useState(null);
+  const handleRadio = (radioId) => {
+    setSelectedRadio(radioId);
+  };
   return (
     <View style={safeAreaStyle.maincontainer}>
       <View style={safeAreaStyle.container}>
@@ -21,19 +25,33 @@ const PaymentPage = () => {
         <Text>Choose your default payment card.</Text>
         <View style={{ marginTop: 55 }}>
           <View style={{ marginBottom: 35 }}>
-            <RadioButtonItem
-              radioBackground="green"
-          
-              value="test"
-              label={
-                <TouchableOpacity
-                  style={{ width: "100%", paddingHorizontal: 15 }}
-                  onPress={() => setCurrent("test1")}
-                >
-                  <Text style={{ marginBottom: 5 }}>Axis bank credit card</Text>
-                  <Text style={{ fontWeight: "700" }}>53XX XXXX XXXX 1234</Text>
-                </TouchableOpacity>
-              }
+            <View style={{ marginBottom: 35 }}>
+              <RadioButton
+                place="Axis bank credit card"
+                address="53XX XXXX XXXX 1234"
+                radioId={1}
+                selectedRadio={selectedRadio}
+                handleRadio={handleRadio}
+                type="payments"
+              />
+            </View>
+            <View style={{ marginBottom: 35 }}>
+              <RadioButton
+                place="Axis bank credit card"
+                address="53XX XXXX XXXX 1234"
+                radioId={2}
+                selectedRadio={selectedRadio}
+                handleRadio={handleRadio}
+                type="payments"
+              />
+            </View>
+            <RadioButton
+              place="Axis bank credit card"
+              address="53XX XXXX XXXX 1234"
+              radioId={3}
+              selectedRadio={selectedRadio}
+              handleRadio={handleRadio}
+              type="payments"
             />
           </View>
         </View>
@@ -60,9 +78,9 @@ const styles = (insets) =>
       paddingTop: 25,
     },
     header: {
-        fontSize: 30,
-        fontWeight: "bold",
-        marginTop: 35,
-        marginBottom: 5,
-      },
+      fontSize: 30,
+      fontWeight: "bold",
+      marginTop: 35,
+      marginBottom: 5,
+    },
   });

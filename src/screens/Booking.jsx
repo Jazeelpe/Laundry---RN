@@ -12,22 +12,23 @@ import { useNavigation } from "@react-navigation/native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import CustomTextInput from "../components/CustomTextInput";
 import Button from "../components/Button";
-
+import { useSelector } from "react-redux";
 const Booking = () => {
   const [date, setDate] = useState(new Date(1598051730000));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [value,setValue] = useState(true)
+  const [value, setValue] = useState(true);
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
-  console.log(date)
+  const { activeAddress } = useSelector((state) => state.user.activeAddress);
+  console.log(activeAddress);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
-    setValue(!value)
+    setValue(!value);
   };
 
   const showMode = (currentMode) => {
@@ -75,7 +76,18 @@ const Booking = () => {
           </View>
         </View>
         <View>
-          <CustomTextInput placeholder={"Address"} type="booking" />
+          <CustomTextInput
+            placeholder={"Address"}
+            type="booking"
+            handleFocus={() => {
+              navigation.navigate("SavedAddressPage");
+            }}
+            value={
+              activeAddress === ""
+                ? "238 allahabad street,  sanitorium, chennai."
+                : activeAddress
+            }
+          />
           <View style={safeAreaStyle.absoluteContainer}>
             <Text style={safeAreaStyle.text}>From</Text>
           </View>
@@ -87,7 +99,10 @@ const Booking = () => {
           </View>
         </View>
         <View style={{ alignSelf: "center" }}>
-          <Button btnText={"Confirm Booking"} handleNavigation={()=>navigation.navigate("ConfirmPage")} />
+          <Button
+            btnText={"Confirm Booking"}
+            handleNavigation={() => navigation.navigate("ConfirmPage")}
+          />
         </View>
         <View>
           <Text

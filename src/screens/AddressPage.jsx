@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-
+import RadioButton from "../components/RadioButton";
 
 const AddressPage = () => {
   const insets = useSafeAreaInsets();
   const safeAreaStyle = styles(insets);
   const navigation = useNavigation();
-  const [radioActive, setRadioActive] = useState(1);
+  const [selectedRadio, setSelectedRadio] = useState(null);
+
+  const handleRadio = (radioId) => {
+    setSelectedRadio(radioId);
+  };
   return (
     <View style={safeAreaStyle.maincontainer}>
       <View style={safeAreaStyle.container}>
@@ -22,7 +26,23 @@ const AddressPage = () => {
         <Text>Choose your default pickup address</Text>
         <View style={{ marginTop: 55 }}>
           <View style={{ marginBottom: 35 }}>
-            {/* radio */}
+            <View style={{ marginBottom: 35 }}>
+              <RadioButton
+                place="Home 1"
+                address="015 Rolfson Inlet Apt. 700, Lake Linda, Saint Helena 1"
+                radioId={1}
+                selectedRadio={selectedRadio}
+                handleRadio={handleRadio}
+              />
+            </View>
+            <RadioButton
+              place="Home 2"
+              address="015 Rolfson Inlet Apt. 700, Lake Linda, Saint Helena 2"
+              radioId={2}
+              selectedRadio={selectedRadio}
+              handleRadio={handleRadio}
+            />
+            {/* radio 
             <View
               style={{
                 flexDirection: "row",
@@ -50,7 +70,7 @@ const AddressPage = () => {
             </View>
           </View>
           <View>
-            {/* radio */}
+        
             <View
               style={{
                 flexDirection: "row",
@@ -75,7 +95,7 @@ const AddressPage = () => {
                   015 Rolfson Inlet Apt. 700, Lake Linda, Saint Helena
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View>*/}
           </View>
         </View>
       </View>
